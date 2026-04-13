@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>杨沁衡 | AI内容策划 & 数字创意创作者</title>
+  <!-- CDN 依赖 -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+  
+  <!-- 自定义Tailwind配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            deepSpace: '#0A192F',
+            neonCyan: '#64FFDA',
+            electricPurple: '#7928CA',
+            darkGray: '#112240',
+            lightGray: '#CCD6F6',
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-gradient {
+        background: linear-gradient(90deg, #64FFDA, #7928CA);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .neon-border {
+        box-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+      }
+      .scroll-smooth {
+        scroll-behavior: smooth;
+      }
+    }
+  </style>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-smooth: smooth;
+      overflow-x: hidden;
+    }
+    body {
+      background-color: #0A192F;
+      color: #CCD6F6;
+      font-family: 'Inter', sans-serif;
+    }
+    /* 粒子背景容器 */
+    #tsparticles, #tsparticles-footer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    /* 滚动动画 */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: 0.8s ease;
+    }
+    .fade-in.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* 自定义滚动条 */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0A192F;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #64FFDA;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+
+<body class="bg-deepSpace text-lightGray font-inter">
+  <!-- 加载动画 -->
+  <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-deepSpace">
+    <div class="w-16 h-16 border-4 border-neonCyan border-t-electricPurple rounded-full animate-spin"></div>
+  </div>
+
+  <!-- 导航栏 -->
+  <nav id="navbar" class="fixed w-full top-0 z-40 py-4 transition-all duration-300">
+    <div class="container mx-auto px-4 md:px-8 flex justify-between items-center">
+      <a href="#hero" class="text-2xl font-bold text-white hover:text-neonCyan transition-colors">
+        <span class="text-neonCyan">&lt;</span> 杨沁衡 <span class="text-neonCyan">/&gt;</span>
+      </a>
+      
+      <!-- 桌面端导航 -->
+      <div class="hidden md:flex gap-8">
+        <a href="#about" class="hover:text-neonCyan transition-colors">关于我</a>
+        <a href="#projects" class="hover:text-neonCyan transition-colors">作品集</a>
+        <a href="#blog" class="hover:text-neonCyan transition-colors">思想库</a>
+        <a href="#skills" class="hover:text-neonCyan transition-colors">技能</a>
+        <a href="#contact" class="hover:text-neonCyan transition-colors">联系我</a>
+        <a href="#contact" class="px-4 py-2 border border-neonCyan text-neonCyan rounded hover:bg-neonCyan/10 transition-all">下载简历</a>
+      </div>
+
+      <!-- 移动端汉堡菜单 -->
+      <button id="menuBtn" class="md:hidden text-2xl text-white">
+        <i class="fa fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- 移动端菜单 -->
+    <div id="mobileMenu" class="md:hidden hidden bg-darkGray absolute w-full top-16 py-4 px-4 z-50">
+      <div class="flex flex-col gap-4">
+        <a href="#about" class="hover:text-neonCyan">关于我</a>
+        <a href="#projects" class="hover:text-neonCyan">作品集</a>
+        <a href="#blog" class="hover:text-neonCyan">思想库</a>
+        <a href="#skills" class="hover:text-neonCyan">技能</a>
+        <a href="#contact" class="hover:text-neonCyan">联系我</a>
+        <a href="#contact" class="px-4 py-2 border border-neonCyan text-neonCyan rounded w-fit">下载简历</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero区域 -->
+  <header id="hero" class="relative h-screen flex items-center justify-center overflow-hidden">
+    <div id="tsparticles"></div>
+    <div class="container mx-auto px-4 md:px-8 z-10 text-center md:text-left">
+      <h2 class="text-neonCyan text-xl md:text-2xl mb-2 fade-in">你好，我是</h2>
+      <h1 class="text-4xl md:text-6xl font-bold text-white mb-4 fade-in delay-200">杨沁衡</h1>
+      <h3 class="text-2xl md:text-3xl text-gradient font-semibold mb-6 fade-in delay-400">
+        AI内容策划 & 数字创意创作者
+      </h3>
+      <p class="max-w-2xl text-lg mb-8 fade-in delay-600">
+        从动画特效到AI驱动的内容创新，用「创意+技术+AI工具」打造先锋内容，专注思政/科普/新媒体领域全链路策划
+      </p>
+      <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start fade-in delay-800">
+        <a href="#projects" class="px-6 py-3 bg-neonCyan text-deepSpace font-semibold rounded hover:neon-border transition-all">查看作品集</a>
+        <a href="#contact" class="px-6 py-3 border border-neonCyan text-neonCyan rounded hover:bg-neonCyan/10 transition-all">下载简历</a>
+        <a href="#contact" class="px-6 py-3 border border-electricPurple text-electricPurple rounded hover:bg-electricPurple/10 transition-all">联系我</a>
+      </div>
+      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+        <i class="fa fa-angle-down text-2xl text-neonCyan"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- 关于我 -->
+  <section id="about" class="py-20 relative">
+    <div class="container mx-auto px-4 md:px-8">
+      <h2 class="text-3xl font-bold text-white mb-12 text-center fade-in">
+        关于我 <span class="text-neonCyan">/ About Me</span>
+      </h2>
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <!-- 左侧简介 -->
+        <div class="fade-in">
+          <div class="w-40 h-40 mx-auto md:mx-0 rounded-full overflow-hidden border-2 border-neonCyan neon-border mb-6">
+            <img src="https://picsum.photos/200/200" alt="杨沁衡" class="w-full h-full object-cover">
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-4">个人简介</h3>
+          <p class="mb-4 leading-relaxed">
+            杨沁衡，动画专业学士，中共党员，拥有5年+数字内容全链路创作、视觉特效与项目管理经验。
+          </p>
+          <p class="mb-4 leading-relaxed">
+            从传统动画设计、政府项目内容制作，到影视特效团队管理，再到AI时代的内容策划创新，深耕新媒体、科普、思政内容的策划与传播，擅长用「创意+技术+AI工具」打造高影响力内容。
+          </p>
+          <p class="leading-relaxed">
+            主导高校思政创新项目，参与打造12w+爆款科普内容，具备从0到1的内容策划、项目管理、团队带领能力。
+          </p>
+        </div>
+
+        <!-- 右侧时间轴 -->
+        <div class="fade-in delay-300">
+          <h3 class="text-xl font-semibold text-white mb-4">经历 & 荣誉</h3>
+          <div class="space-y-6 border-l-2 border-neonCyan pl-6">
+            <!-- 工作经历 -->
+            <div>
+              <span class="text-neonCyan">2021.07 - 至今</span>
+              <h4 class="text-white font-semibold text-lg">四川见山科技 | 特效师/组长</h4>
+              <p>负责UE引擎UI动效、影视特效、视频剪辑；团队管理、跨部门协同</p>
+            </div>
+            <div>
+              <span class="text-neonCyan">2020.06 - 2020.09</span>
+              <h4 class="text-white font-semibold text-lg">四川杉木文创传媒 | 设计实习生</h4>
+              <p>政府项目物料设计、KV设计、视频拍摄剪辑</p>
+            </div>
+            <!-- 教育经历 -->
+            <div>
+              <span class="text-neonCyan">2017.09 - 2021.06</span>
+              <h4 class="text-white font-semibold text-lg">西华大学 | 动画/学士</h4>
+              <p>国家奖学金、校级一等奖学金、优秀毕业生、优秀学生干部</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 项目作品集 -->
+  <section id="projects" class="py-20 bg-darkGray">
+    <div class="container mx-auto px-4 md:px-8">
+      <h2 class="text-3xl font-bold text-white mb-12 text-center fade-in">
+        项目作品集 <span class="text-neonCyan">/ Projects</span>
+      </h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- 项目1 -->
+        <div class="bg-deepSpace rounded-lg p-6 hover:neon-border transition-all fade-in">
+          <h3 class="text-xl font-semibold text-white mb-2">高校思政教育创新模式</h3>
+          <span class="text-neonCyan text-sm">主持 | 2020.02-2020.06</span>
+          <p class="my-4">主导思政内容创新研究，探索新媒体+AI在思政教育中的应用，发表学术期刊论文。</p>
+          <div class="text-electricPurple">#思政内容 #AI策划 #项目全流程</div>
+        </div>
+        <!-- 项目2 -->
+        <div class="bg-deepSpace rounded-lg p-6 hover:neon-border transition-all fade-in delay-200">
+          <h3 class="text-xl font-semibold text-white mb-2">湘江保护儿童科普课程</h3>
+          <span class="text-neonCyan text-sm">核心成员 | 2021.07-2023.03</span>
+          <p class="my-4">打造12w+爆款科普内容，省级优秀项目，学习强国/红网推荐，儿童科普视觉化策划。</p>
+          <div class="text-electricPurple">#科普内容 #爆款策划 #视觉传播</div>
+        </div>
+        <!-- 项目3 -->
+        <div class="bg-deepSpace rounded-lg p-6 hover:neon-border transition-all fade-in delay-400">
+          <h3 class="text-xl font-semibold text-white mb-2">AIGC内容创作实验室</h3>
+          <span class="text-neonCyan text-sm">个人探索</span>
+          <p class="my-4">精通ComfyUI/GPT/Midjourney，AI脚本/视觉/个性化内容全流程策划实践。</p>
+          <div class="text-electricPurple">#AIGC #AI工具 #内容创新</div>
+        </div>
+        <!-- 项目4 -->
+        <div class="bg-deepSpace rounded-lg p-6 hover:neon-border transition-all fade-in delay-600">
+          <h3 class="text-xl font-semibold text-white mb-2">UE+AI互动内容策划</h3>
+          <span class="text-neonCyan text-sm">工作延伸</span>
+          <p class="my-4">UE引擎+AI融合，沉浸式互动内容策划，技术+内容+AI三维度能力整合。</p>
+          <div class="text-electricPurple">#UE引擎 #互动内容 #AI技术</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 博客/思想库 -->
+  <section id="blog" class="py-20">
+    <div class="container mx-auto px-4 md:px-8">
+      <h2 class="text-3xl font-bold text-white mb-12 text-center fade-in">
+        思想库 <span class="text-neonCyan">/ Insights</span>
+      </h2>
+      <div class="flex flex-wrap gap-3 justify-center mb-8 fade-in">
+        <span class="px-3 py-1 bg-neonCyan/20 text-neonCyan rounded">AI内容策划</span>
+        <span class="px-3 py-1 bg-electricPurple/20 text-electricPurple rounded">新媒体运营</span>
+        <span class="px-3 py-1 bg-darkGray text-white rounded">数字创意</span>
+        <span class="px-3 py-1 bg-darkGray text-white rounded">项目复盘</span>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6 fade-in delay-300">
+        <div class="p-4 border border-gray-700 rounded hover:neon-border transition-all">
+          <h3 class="text-white font-semibold">AIGC时代，内容策划的核心能力重构</h3>
+          <p class="text-sm text-gray-400 mt-2">AI工具如何重塑内容创作全流程</p>
+        </div>
+        <div class="p-4 border border-gray-700 rounded hover:neon-border transition-all">
+          <h3 class="text-white font-semibold">12w+爆款科普内容策划全流程复盘</h3>
+          <p class="text-sm text-gray-400 mt-2">儿童科普内容的传播逻辑与技巧</p>
+        </div>
+        <div class="p-4 border border-gray-700 rounded hover:neon-border transition-all">
+          <h3 class="text-white font-semibold">UE引擎+AI：互动内容的未来趋势</h3>
+          <p class="text-sm text-gray-400 mt-2">技术与创意融合的内容新形态</p>
+        </div>
+        <div class="p-4 border border-gray-700 rounded hover:neon-border transition-all">
+          <h3 class="text-white font-semibold">思政内容的AI化破圈之路</h3>
+          <p class="text-sm text-gray-400 mt-2">垂直领域内容的AI创新实践</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 技能矩阵 -->
+  <section id="skills" class="py-20 bg-darkGray">
+    <div class="container mx-auto px-4 md:px-8">
+      <h2 class="text-3xl font-bold text-white mb-12 text-center fade-in">
+        技能矩阵 <span class="text-neonCyan">/ Skills</span>
+      </h2>
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <!-- 雷达图 -->
+        <div class="bg-deepSpace p-6 rounded-lg fade-in">
+          <canvas id="skillsChart" height="300"></canvas>
+        </div>
+        <!-- 标签云 -->
+        <div class="flex flex-wrap gap-3 fade-in delay-300">
+          <span class="px-4 py-2 bg-neonCyan/20 text-neonCyan rounded-full text-lg">AIGC工具</span>
+          <span class="px-4 py-2 bg-electricPurple/20 text-electricPurple rounded-full text-lg">内容策划</span>
+          <span class="px-4 py-2 bg-white/10 text-white rounded-full">UE引擎</span>
+          <span class="px-4 py-2 bg-white/10 text-white rounded-full">影视特效</span>
+          <span class="px-4 py-2 bg-white/10 text-white rounded-full">视频剪辑</span>
+          <span class="px-4 py-2 bg-neonCyan/20 text-neonCyan rounded-full">团队管理</span>
+          <span class="px-4 py-2 bg-electricPurple/20 text-electricPurple rounded-full">项目管理</span>
+          <span class="px-4 py-2 bg-white/10 text-white rounded-full">新媒体运营</span>
+          <span class="px-4 py-2 bg-white/10 text-white rounded-full">视觉设计</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 联系我 -->
+  <section id="contact" class="py-20 relative overflow-hidden">
+    <div id="tsparticles-footer"></div>
+    <div class="container mx-auto px-4 md:px-8 z-10 relative text-center">
+      <h2 class="text-3xl font-bold text-white mb-8 fade-in">
+        联系我 <span class="text-neonCyan">/ Contact</span>
+      </h2>
+      <div class="max-w-xl mx-auto bg-deepSpace/80 p-8 rounded-lg neon-border fade-in delay-300">
+        <div class="text-xl mb-4">
+          <i class="fa fa-phone text-neonCyan mr-2"></i> 13541806619
+        </div>
+        <div class="text-xl mb-6">
+          <i class="fa fa-envelope text-neonCyan mr-2"></i> 1002052840@qq.com
+        </div>
+        <div class="flex justify-center gap-6 text-2xl mb-8">
+          <a href="#" class="text-neonCyan hover:text-electricPurple transition-colors"><i class="fa fa-behance"></i></a>
+          <a href="#" class="text-neonCyan hover:text-electricPurple transition-colors"><i class="fa fa-linkedin"></i></a>
+          <a href="#" class="text-neonCyan hover:text-electricPurple transition-colors"><i class="fa fa-github"></i></a>
+          <a href="#" class="text-neonCyan hover:text-electricPurple transition-colors"><i class="fa fa-weixin"></i></a>
+        </div>
+        <a href="#" class="px-8 py-3 bg-neonCyan text-deepSpace font-bold rounded-lg hover:neon-border transition-all text-lg">
+          下载简历
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="py-6 text-center text-gray-500">
+    <p>© 2025 杨沁衡 | AI内容策划 & 数字创意创作者</p>
+  </footer>
+
+  <!-- 回到顶部按钮 -->
+  <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-neonCyan text-deepSpace rounded-full flex items-center justify-center z-40 opacity-0 invisible transition-all">
+    <i class="fa fa-angle-up text-xl"></i>
+  </button>
+
+  <script>
+    // 加载动画
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('opacity-0', 'invisible');
+        document.getElementById('loader').style.transition = '0.5s ease';
+      }, 1000);
+    });
+
+    // 导航栏滚动效果
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('bg-deepSpace/90', 'shadow-lg');
+      } else {
+        navbar.classList.remove('bg-deepSpace/90', 'shadow-lg');
+      }
+    });
+
+    // 移动端菜单
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // 回到顶部
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTop.classList.remove('opacity-0', 'invisible');
+      } else {
+        backToTop.classList.add('opacity-0', 'invisible');
+      }
+    });
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // 滚动渐入动画
+    const fadeElements = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1 });
+    fadeElements.forEach(el => observer.observe(el));
+
+    // 粒子背景初始化
+    window.tsParticles.load("tsparticles", {
+      particles: {
+        shape: { type: "circle" },
+        color: { value: ["#64FFDA", "#7928CA"] },
+        size: { value: 2 },
+        move: { enable: true, speed: 1 },
+        number: { value: 80 },
+        opacity: { value: 0.5 }
+      },
+      interactivity: {
+        events: {
+          onHover: { enable: true, mode: "grab" },
+          onClick: { enable: true, mode: "push" }
+        }
+      }
+    });
+    window.tsParticles.load("tsparticles-footer", {
+      particles: {
+        shape: { type: "circle" },
+        color: { value: ["#64FFDA", "#7928CA"] },
+        size: { value: 1.5 },
+        move: { enable: true, speed: 0.8 },
+        number: { value: 50 },
+        opacity: { value: 0.3 }
+      }
+    });
+
+    // 技能雷达图
+    const ctx = document.getElementById('skillsChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: ['AI内容策划', 'AIGC工具', 'UE引擎', '视觉特效', '项目管理', '新媒体运营'],
+        datasets: [{
+          label: '技能熟练度',
+          data: [95, 90, 85, 88, 80, 85],
+          backgroundColor: 'rgba(100, 255, 218, 0.2)',
+          borderColor: '#64FFDA',
+          pointBackgroundColor: '#7928CA',
+          pointBorderColor: '#fff'
+        }]
+      },
+      options: { scales: { r: { beginAtZero: true, max: 100 } } }
+    });
+  </script>
+</body>
+</html>
